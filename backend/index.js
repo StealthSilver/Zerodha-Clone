@@ -26,7 +26,7 @@ app.get("/allPositions", async (req, res) => {
     res.json(allPositions);
   } catch (error) {
     console.error("Error fetching positions:", error);
-    res.status(500).json({ error: "Failed to fetch positions" });
+    res.status(500).json({ error: "Failed to fetch positions at all" });
   }
 });
 
