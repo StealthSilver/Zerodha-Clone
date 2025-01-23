@@ -14,8 +14,9 @@ const url = process.env.MONGO_URL;
 
 const app = express();
 
+// Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json()); // Replacing bodyParser.json() with built-in middleware
 
 // Connect to MongoDB
 mongoose
@@ -28,6 +29,8 @@ mongoose
   });
 
 // Define routes
+
+// Fetch all holdings
 app.get("/allHoldings", async (req, res) => {
   try {
     const allHoldings = await HoldingsModel.find({});
@@ -38,6 +41,7 @@ app.get("/allHoldings", async (req, res) => {
   }
 });
 
+// Fetch all positions
 app.get("/allPositions", async (req, res) => {
   try {
     const allPositions = await PositionsModel.find({});
@@ -48,13 +52,16 @@ app.get("/allPositions", async (req, res) => {
   }
 });
 
-app.get("/allOrders", async (req, res) => {
+// Create a new order
+app.post("/newOrder", async (req, res) => {
   try {
-    const allOrders = await OrdersModel.find({});
-    res.json(allOrders);
+    const { name, qty, prices, mode } = req.body; // Use "prices" instead of "price"
+    const newOrder = new OrdersModel({ name, qty, prices, mode });
+    await newOrder.save();
+    res.status(201).json({ message: "Order created successfully" });
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ error: "Failed to fetch orders" });
+    console.error("Error saving order:", error);
+    res.status(500).json({ error: "Failed to create order" });
   }
 });
 
