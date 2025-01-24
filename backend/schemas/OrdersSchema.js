@@ -1,12 +1,10 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { Schema } = require("mongoose");
 
-// Define the schema
-const OrdersSchema = new mongoose.Schema({
+const OrdersSchema = new Schema({
   name: String,
   qty: Number,
-  prices: Number, // "prices" matches the request body
+  price: Number,
   mode: String,
 });
 
-module.exports = OrdersSchema; // Export ONLY the schema
+module.exports = { OrdersSchema };
